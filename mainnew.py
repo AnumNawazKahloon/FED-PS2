@@ -77,8 +77,8 @@ def train_federated(train_data, test_data, model_type='lstm'):
     client_datasets = split_data_for_clients(train_data, FEDERATED_LEARNING['num_clients'])
     print(f"Split data among {FEDERATED_LEARNING['num_clients']} clients")
     
-    # Initialize server
-    server = Server(test_data, model_type=model_type)
+    # Initialize server - FIXED: Remove model_type parameter
+    server = Server(test_data)
     
     start_time = time.time()
     
@@ -94,8 +94,8 @@ def train_federated(train_data, test_data, model_type='lstm'):
             replace=False
         )
         
-        # Get current global model state
-        global_state = server.get_global_state()
+        # Get current global model state - FIXED: Use global_model directly
+        global_state = server.global_model.state_dict()
         
         # Train selected clients
         client_updates = []
@@ -122,6 +122,7 @@ def train_federated(train_data, test_data, model_type='lstm'):
     
     print(f"Federated training completed in {training_time:.2f} seconds")
     
+    # FIXED: Return the global_model directly
     return server.global_model, final_metrics
 
 
@@ -251,7 +252,7 @@ def main():
         print("\n" + "="*100)
         print("GENERATING VISUALIZATIONS")
         print("="*100)
-        create_visualization_report(results, centralized_models, test_data, output_dir='/Users/virk/Parma/FED-PS2/plots/')
+        create_visualization_report(results, centralized_models, test_data, output_dir='./plots/')
     except ImportError:
         print("\n⚠ Visualization module not found. Skipping visualization generation.")
         print("  Make sure visualization.py is in the same directory.")

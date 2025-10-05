@@ -1,20 +1,25 @@
 import torch
 import torch.optim as optim
-from models import SOCPredictor
+from models import create_model
 from config import TRAINING, FEDERATED_LEARNING
+import numpy as np
 
 class Client:
-    def __init__(self, client_id, data):
+    def __init__(self, client_id, data, model_type='lstm'):
         self.id = client_id
         self.data = data
+        self.model_type = model_type.lower()
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.model = SOCPredictor().to(self.device)
+        
+        # Initialize model based on type
+        self.model = create_model(model_type).to(self.device)
         self.optimizer = optim.Adam(self.model.parameters(), lr=TRAINING['learning_rate'])
         self.criterion = torch.nn.MSELoss()
     
     def train(self, global_model_state):
         """
         Train client model with FedProx regularization
+        Supports LSTM, BiLSTM, CNN-LSTM models
         """
         # Load global model parameters
         self.model.load_state_dict(global_model_state)
@@ -47,9 +52,11 @@ class Client:
                 if FEDERATED_LEARNING['mu'] > 0:
                     proximal_term = 0.0
                     for local_param, global_param in zip(
-                        self.model.parameters(), global_model_state.values()
+                        self.model.parameters(), 
+                        [p for p in global_model_state.values()]
                     ):
-                        proximal_term += (local_param - global_param).norm(2)
+                        if isinstance(global_param, torch.Tensor):
+                            proximal_term += (local_param - global_param.to(self.device)).norm(2)
                     loss += (FEDERATED_LEARNING['mu'] / 2) * proximal_term
                 
                 # Backward pass and optimize

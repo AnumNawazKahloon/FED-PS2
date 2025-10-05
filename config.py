@@ -2,24 +2,29 @@
 
 # Federated Learning Parameters
 FEDERATED_LEARNING = {
-    'rounds': 20,
-    'mu': 0.1,  # FedProx regularization parameter
-    'client_ratio': 1.0,  # Ratio of clients to select each round
+    'rounds': 50,
+    'mu': 0.01,  # FedProx regularization parameter
+    'client_ratio': 0.75,  # Ratio of clients to select each round
     'num_clients': 4,  # Number of clients for federated learning
 }
 
 # Model Architecture Parameters
 MODEL = {
-    'hidden_size': 64,
-    'dropout_rate': 0.2,
+    'hidden_size': 128,
+    'dropout_rate': 0.3,
     'input_size': 9,  # Based on your features
+    'lstm_hidden_size': 128,  # Hidden size for LSTM models
+    'lstm_num_layers': 2,  # Number of LSTM layers
+    'cnn_channels': [64, 128],  # CNN channels for CNN-LSTM
 }
 
 # Training Parameters
 TRAINING = {
-    'batch_size': 32,
-    'local_epochs': 5,
-    'learning_rate': 0.001,
+    'batch_size': 64,
+    'local_epochs': 2,
+    'learning_rate': 0.001,  # Lower learning rate for LSTM models
+    'lr_decay': 0.995,
+    'weight_decay': 1e-5,  
 }
 
 # Data Parameters
@@ -33,7 +38,7 @@ DATA = {
     'data_path': './data/',  # Path to your CSV files
 }
 
-# Evaluation Parameters
+
 EVALUATION = {
     'metrics': ['mse', 'mae', 'rmse'],
 }

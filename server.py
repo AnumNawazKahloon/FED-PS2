@@ -1,18 +1,22 @@
 import torch
 import numpy as np
-from models import SOCPredictor
+from models import create_model
 from utils import evaluate_model
 from config import FEDERATED_LEARNING
 
 class Server:
-    def __init__(self, test_data):
+    def __init__(self, test_data, model_type='lstm'):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.global_model = SOCPredictor().to(self.device)
+        self.model_type = model_type.lower()
         self.test_data = test_data
+        
+        # Initialize global model based on type
+        self.global_model = create_model(model_type).to(self.device)
     
     def aggregate(self, client_updates):
         """
-        Aggregate client updates using Federated Averaging
+        Aggregate client updates using Federated Averaging (FedAvg)
+        Works for all PyTorch models: LSTM, BiLSTM, CNN-LSTM, MLP
         """
         global_dict = self.global_model.state_dict()
         
@@ -23,7 +27,7 @@ class Server:
         # Sum all client updates
         for client_dict in client_updates:
             for key in global_dict.keys():
-                global_dict[key] += client_dict[key]
+                global_dict[key] += client_dict[key].to(self.device)
         
         # Average the updates
         for key in global_dict.keys():
@@ -39,3 +43,7 @@ class Server:
         Evaluate the global model on test data
         """
         return evaluate_model(self.global_model, self.test_data, self.device)
+    
+    def get_global_state(self):
+        """Get current global model state"""
+        return self.global_model.state_dict()
