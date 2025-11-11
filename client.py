@@ -24,7 +24,7 @@ class Client:
         # Load global model parameters
         self.model.load_state_dict(global_model_state)
         
-        # Set model to training mode
+        # Set model to training 
         self.model.train()
         
         # Create data loader
