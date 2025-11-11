@@ -144,7 +144,7 @@ def print_comparison(results):
     print("\n" + "="*100)
     
     # Find best models overall
-    print("\nBEST MODELS (OVERALL):")
+    print("\nBEST MODELS (Overall):")
     print("-" * 100)
     
     all_results = []
@@ -180,8 +180,8 @@ def print_comparison(results):
 
 def main():
     print("\n" + "="*100)
-    print("COMPREHENSIVE COMPARISON: LSTM, BiLSTM, CNN-LSTM")
-    print("CENTRALIZED vs FEDERATED LEARNING FOR SOC PREDICTION")
+    print("Comprehensive Comparison: LSTM, BiLSTM, CNN-LSTM")
+    print("Centralized vs Federated learning for SOC Prediction)
     print("="*100)
     
     # Load data
@@ -199,7 +199,7 @@ def main():
     
     for model_type in models_to_train:
         print("\n" + "#"*100)
-        print(f"# {model_type.upper()} MODEL - CENTRALIZED & FEDERATED")
+        print(f"# {model_type.upper()} MODEL - Centralized & Federated")
         print("#"*100)
         
         # Train centralized
