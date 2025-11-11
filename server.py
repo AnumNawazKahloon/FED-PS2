@@ -40,7 +40,7 @@ class Server:
     
     def evaluate(self):
         """
-        Evaluate the global model on test data
+        Evaluation of global model on test data
         """
         return evaluate_model(self.global_model, self.test_data, self.device)
     
