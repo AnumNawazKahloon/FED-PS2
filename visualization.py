@@ -658,7 +658,7 @@ def create_visualization_report(results, models_dict=None, test_data=None, outpu
         create_visualization_report(results, models_dict, test_data)
     """
     print("\n" + "="*80)
-    print("CREATING COMPREHENSIVE VISUALIZATION REPORT")
+    print("Comprihensive Report")
     print("="*80)
     
     # Create visualizer
@@ -675,9 +675,9 @@ def create_visualization_report(results, models_dict=None, test_data=None, outpu
     print("="*80)
     print(f"\nAll visualizations saved to: {output_dir}")
     print("\nGenerated files:")
-    print("  1. mse_comparison.png - MSE comparison chart")
-    print("  2. mae_comparison.png - MAE comparison chart")
-    print("  3. rmse_comparison.png - RMSE comparison chart")
+    print("  1. mse_comparison.png - MSE comparison")
+    print("  2. mae_comparison.png - MAE comparison")
+    print("  3. rmse_comparison.png - RMSE comparison")
     print("  4. training_time_comparison.png - Training time comparison")
     print("  5. accuracy_bars.png - Accuracy metrics grouped bars")
     print("  6. centralized_vs_federated.png - Mode comparison")
@@ -687,7 +687,7 @@ def create_visualization_report(results, models_dict=None, test_data=None, outpu
     print(" 10. combined_metrics.png - All metrics combined")
     print(" 11. feature_importance.png - Feature importance (if models provided)")
     print(" 12. shap_*.png - SHAP analysis (if models provided)")
-    print(" 13. results_summary.csv - Results in CSV format")
+    print(" 13. results_summary.csv - Results in CSV")
     print("="*80 + "\n")
     
     return df
